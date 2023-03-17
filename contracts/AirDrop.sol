@@ -25,6 +25,7 @@ contract AirDrop is Ownable {
         uint _amount,
         address[] memory _receivers
     ) external onlyOwner {
+        require(_receivers.length > 0, "AirDrop: No receivers provided");
         bytes32 eventID = keccak256(abi.encode(_eventID));
         for (uint i = 0; i < _receivers.length; ) {
             _airDrop(eventID, _token, _receivers[i], _amount);
@@ -40,6 +41,7 @@ contract AirDrop is Ownable {
         uint[] memory _amounts,
         address[] memory _receivers
     ) external onlyOwner {
+        require(_receivers.length > 0, "AirDrop: No receivers provided");
         bytes32 eventID = keccak256(abi.encode(_eventID));
         for (uint i = 0; i < _receivers.length; ) {
             _airDrop(eventID, _token, _receivers[i], _amounts[i]);
@@ -55,6 +57,7 @@ contract AirDrop is Ownable {
         uint[] memory _amounts,
         address[] memory _receivers
     ) external onlyOwner {
+        require(_receivers.length > 0, "AirDrop: No receivers provided");
         bytes32 eventID = keccak256(abi.encode(_eventID));
         for (uint i = 0; i < _receivers.length; ) {
             _airDrop(eventID, _tokens[i], _receivers[i], _amounts[i]);
