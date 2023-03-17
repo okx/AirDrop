@@ -1,0 +1,9 @@
+/cache
+/node_modules
+/package-lock.json
+.DS_Store
+/artifacts/
+/.vscode/
+/coverage/
+.env
+remix-compiler.config.js
