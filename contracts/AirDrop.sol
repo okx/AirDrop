@@ -79,6 +79,7 @@ contract AirDrop is Ownable {
         address _receiver,
         uint _amount
     ) internal {
+        require(dropped[_eventID][_token][_receiver] == 0, "AirDrop: Dropped");
         _token.safeTransfer(_receiver, _amount);
         dropped[_eventID][_token][_receiver] = _amount;
         emit AirDropped(_eventID, _token, _receiver, _amount);
