@@ -25,9 +25,11 @@ contract AirDrop is Ownable {
         uint _amount,
         address[] memory _receivers
     ) external onlyOwner {
-        require(_receivers.length > 0, "AirDrop: No receivers provided");
+        uint length = _receivers.length;
+        require(length > 0, "AirDrop: No receivers provided");
+
         bytes32 eventID = keccak256(abi.encode(_eventID));
-        for (uint i = 0; i < _receivers.length; ) {
+        for (uint i = 0; i < length; ) {
             _airDrop(eventID, _token, _receivers[i], _amount);
             unchecked {
                 ++i;
@@ -41,9 +43,12 @@ contract AirDrop is Ownable {
         uint[] memory _amounts,
         address[] memory _receivers
     ) external onlyOwner {
-        require(_receivers.length > 0, "AirDrop: No receivers provided");
+        uint length = _receivers.length;
+        require(length > 0, "AirDrop: No receivers provided");
+        require(_amounts.length == length, "AirDrop: Amounts count mismatch");
+
         bytes32 eventID = keccak256(abi.encode(_eventID));
-        for (uint i = 0; i < _receivers.length; ) {
+        for (uint i = 0; i < length; ) {
             _airDrop(eventID, _token, _receivers[i], _amounts[i]);
             unchecked {
                 ++i;
@@ -57,9 +62,13 @@ contract AirDrop is Ownable {
         uint[] memory _amounts,
         address[] memory _receivers
     ) external onlyOwner {
-        require(_receivers.length > 0, "AirDrop: No receivers provided");
+        uint length = _receivers.length;
+        require(length > 0, "AirDrop: No receivers provided");
+        require(_tokens.length == length, "AirDrop: Token count mismatch");
+        require(_amounts.length == length, "AirDrop: Amounts count mismatch");
+
         bytes32 eventID = keccak256(abi.encode(_eventID));
-        for (uint i = 0; i < _receivers.length; ) {
+        for (uint i = 0; i < length; ) {
             _airDrop(eventID, _tokens[i], _receivers[i], _amounts[i]);
             unchecked {
                 ++i;
@@ -83,8 +92,8 @@ contract AirDrop is Ownable {
         uint _amount
     ) internal {
         require(dropped[_eventID][_token][_receiver] == 0, "AirDrop: Dropped");
-        _token.safeTransfer(_receiver, _amount);
         dropped[_eventID][_token][_receiver] = _amount;
+        _token.safeTransfer(_receiver, _amount);
         emit AirDropped(_eventID, _token, _receiver, _amount);
     }
 }
