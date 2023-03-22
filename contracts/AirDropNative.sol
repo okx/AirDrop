@@ -10,7 +10,7 @@ contract AirDropNative is AirDrop {
         bytes32 indexed eventID,
         IERC20 indexed token,
         address indexed receiver,
-        uint amount
+        uint256 amount
     );
 
     receive() external payable {}
@@ -18,15 +18,15 @@ contract AirDropNative is AirDrop {
     function airDropNativeSameAmount(
         string memory _eventID,
         bool _allowFail,
-        uint _gasLimit,
-        uint _amount,
+        uint256 _gasLimit,
+        uint256 _amount,
         address[] memory _receivers
     ) external payable onlyOwner {
-        uint length = _receivers.length;
+        uint256 length = _receivers.length;
         require(length > 0, "AirDropNative: No receivers provided");
 
         bytes32 eventID = keccak256(abi.encode(_eventID));
-        for (uint i = 0; i < length; ) {
+        for (uint256 i = 0; i < length; ) {
             _airDropNative(
                 eventID,
                 _allowFail,
@@ -43,11 +43,11 @@ contract AirDropNative is AirDrop {
     function airDropNative(
         string memory _eventID,
         bool _allowFail,
-        uint _gasLimit,
-        uint[] memory _amounts,
+        uint256 _gasLimit,
+        uint256[] memory _amounts,
         address[] memory _receivers
     ) external payable onlyOwner {
-        uint length = _receivers.length;
+        uint256 length = _receivers.length;
         require(length > 0, "AirDropNative: No receivers provided");
         require(
             _amounts.length == length,
@@ -55,7 +55,7 @@ contract AirDropNative is AirDrop {
         );
 
         bytes32 eventID = keccak256(abi.encode(_eventID));
-        for (uint i = 0; i < length; ) {
+        for (uint256 i = 0; i < length; ) {
             _airDropNative(
                 eventID,
                 _allowFail,
@@ -72,7 +72,7 @@ contract AirDropNative is AirDrop {
 
     function withdrawNative(
         address _receiver,
-        uint _amount
+        uint256 _amount
     ) external onlyOwner {
         transferETH(_receiver, _amount, 0, false);
         emit TokenWithdrawed(IERC20(ETH), _receiver, _amount);
