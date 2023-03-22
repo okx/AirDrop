@@ -6,6 +6,13 @@ import "./AirDrop.sol";
 contract AirDropNative is AirDrop {
     address public constant ETH = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
+    event AirDropFailed(
+        bytes32 indexed eventID,
+        IERC20 indexed token,
+        address indexed receiver,
+        uint amount
+    );
+
     receive() external payable {}
 
     function airDropNativeSameAmount(
@@ -79,10 +86,15 @@ contract AirDropNative is AirDrop {
             dropped[_eventID][IERC20(ETH)][_receiver] == 0,
             "AirDrop: Dropped"
         );
+
         dropped[_eventID][IERC20(ETH)][_receiver] = _amount;
+
         bool success = transferETH(_receiver, _amount, _gasLimit, _allowFail);
+
         if (success) {
             emit AirDropped(_eventID, IERC20(ETH), _receiver, _amount);
+        } else {
+            emit AirDropFailed(_eventID, IERC20(ETH), _receiver, _amount);
         }
     }
 
