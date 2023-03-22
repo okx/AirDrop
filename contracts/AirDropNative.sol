@@ -23,7 +23,7 @@ contract AirDropNative is AirDrop {
         address[] memory _receivers
     ) external payable onlyOwner {
         uint length = _receivers.length;
-        require(length > 0, "AirDrop: No receivers provided");
+        require(length > 0, "AirDropNative: No receivers provided");
 
         bytes32 eventID = keccak256(abi.encode(_eventID));
         for (uint i = 0; i < length; ) {
@@ -48,8 +48,11 @@ contract AirDropNative is AirDrop {
         address[] memory _receivers
     ) external payable onlyOwner {
         uint length = _receivers.length;
-        require(length > 0, "AirDrop: No receivers provided");
-        require(_amounts.length == length, "AirDrop: Amounts count mismatch");
+        require(length > 0, "AirDropNative: No receivers provided");
+        require(
+            _amounts.length == length,
+            "AirDropNative: Amounts count mismatch"
+        );
 
         bytes32 eventID = keccak256(abi.encode(_eventID));
         for (uint i = 0; i < length; ) {
@@ -84,7 +87,7 @@ contract AirDropNative is AirDrop {
     ) internal {
         require(
             dropped[_eventID][IERC20(ETH)][_receiver] == 0,
-            "AirDrop: Dropped"
+            "AirDropNative: Dropped"
         );
 
         dropped[_eventID][IERC20(ETH)][_receiver] = _amount;
@@ -109,6 +112,6 @@ contract AirDropNative is AirDrop {
         } else {
             (success, ) = _to.call{value: _amount}("");
         }
-        require(success || _allowFail, "AirDrop: Transfer Failed");
+        require(success || _allowFail, "AirDropNative: Transfer Failed");
     }
 }
